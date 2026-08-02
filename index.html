@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>فك ضغط ZIP</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      color: #f1f5f9;
+    }
+
+    p.sub {
+      color: #94a3b8;
+      margin-bottom: 28px;
+      font-size: 0.95rem;
+    }
+
+    .drop-zone {
+      border: 2px dashed #475569;
+      border-radius: 12px;
+      padding: 50px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #0f172a;
+    }
+
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: #6366f1;
+      background: #1e1b4b;
+    }
+
+    .drop-zone svg {
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    .drop-zone p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .drop-zone span {
+      color: #818cf8;
+      font-weight: 600;
+    }
+
+    #file-input { display: none; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #4f46e5; }
+
+    #results { margin-top: 28px; display: none; }
+
+    #results h2 {
+      font-size: 1rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 8px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      gap: 10px;
+    }
+
+    .file-name {
+      flex: 1;
+      color: #cbd5e1;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .file-icon { font-size: 1.1rem; }
+
+    .download-btn {
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .download-btn:hover { background: #0284c7; }
+
+    .download-all-btn {
+      width: 100%;
+      justify-content: center;
+      margin-top: 4px;
+      background: #059669;
+    }
+
+    .download-all-btn:hover { background: #047857; }
+
+    #msg {
+      margin-top: 14px;
+      font-size: 0.88rem;
+      color: #f87171;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🗜️ فك ضغط ZIP</h1>
+    <p class="sub">ارفع ملف ZIP وهينزل كل الملفات على جهازك مباشرة</p>
+
+    <div class="drop-zone" id="drop-zone">
+      <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#6366f1">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+      </svg>
+      <p>اسحب ملف <span>ZIP</span> هنا</p>
+      <p style="font-size:0.8rem;margin-top:6px;opacity:0.6">أو</p>
+      <button class="btn" onclick="document.getElementById('file-input').click()">
+        📁 اختر ملف
+      </button>
+      <input type="file" id="file-input" accept=".zip" />
+    </div>
+
+    <div id="msg"></div>
+
+    <div id="results">
+      <h2 id="result-title">الملفات داخل الـ ZIP</h2>
+      <div id="file-list"></div>
+      <button class="btn download-all-btn" id="download-all-btn">
+        ⬇️ تحميل كل الملفات
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const results = document.getElementById('results');
+    const fileList = document.getElementById('file-list');
+    const msg = document.getElementById('msg');
+    const resultTitle = document.getElementById('result-title');
+    const downloadAllBtn = document.getElementById('download-all-btn');
+
+    let extractedFiles = [];
+
+    dropZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) processZip(file);
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) processZip(fileInput.files[0]);
+    });
+
+    function getIcon(name) {
+      const ext = name.split('.').pop().toLowerCase();
+      const icons = { php:'🐘', html:'🌐', css:'🎨', js:'📜', jpg:'🖼️', jpeg:'🖼️',
+        png:'🖼️', gif:'🖼️', txt:'📄', md:'📝', json:'📋', xml:'📋',
+        sql:'🗄️', zip:'🗜️', pdf:'📕', mp4:'🎬', mp3:'🎵' };
+      return icons[ext] || '📄';
+    }
+
+    async function processZip(file) {
+      msg.textContent = '';
+      fileList.innerHTML = '';
+      extractedFiles = [];
+
+      if (!file.name.endsWith('.zip')) {
+        msg.textContent = '⚠️ من فضلك اختر ملف ZIP فقط.';
+        results.style.display = 'none';
+        return;
+      }
+
+      try {
+        const zip = await JSZip.loadAsync(file);
+        const entries = Object.entries(zip.files).filter(([, f]) => !f.dir);
+
+        if (entries.length === 0) {
+          msg.textContent = '⚠️ الملف فارغ أو لا يحتوي على ملفات.';
+          results.style.display = 'none';
+          return;
+        }
+
+        resultTitle.textContent = `الملفات (${entries.length} ملف)`;
+
+        for (const [name, zipEntry] of entries) {
+          const blob = await zipEntry.async('blob');
+          const url = URL.createObjectURL(blob);
+          extractedFiles.push({ name, url, blob });
+
+          const item = document.createElement('div');
+          item.className = 'file-item';
+          item.innerHTML = `
+            <div class="file-name">
+              <span class="file-icon">${getIcon(name)}</span>
+              <span>${name}</span>
+            </div>
+            <button class="download-btn" data-url="${url}" data-name="${name}">تحميل</button>
+          `;
+          fileList.appendChild(item);
+        }
+
+        fileList.querySelectorAll('.download-btn').forEach(btn => {
+          btn.addEventListener('click', () => downloadFile(btn.dataset.url, btn.dataset.name));
+        });
+
+        results.style.display = 'block';
+      } catch (e) {
+        msg.textContent = '❌ حدث خطأ في فتح الملف: ' + e.message;
+        results.style.display = 'none';
+      }
+    }
+
+    function downloadFile(url, name) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name.split('/').pop();
+      a.click();
+    }
+
+    downloadAllBtn.addEventListener('click', async () => {
+      for (const f of extractedFiles) {
+        downloadFile(f.url, f.name);
+        await new Promise(r => setTimeout(r, 200));
+      }
+    });
+  </script>
+</body>
+</html>
