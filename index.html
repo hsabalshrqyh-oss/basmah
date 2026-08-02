@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>بسمة التألق - خدمات التنظيف الشامل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: #f0fafa;
+    color: #1a3a3a;
+    direction: rtl;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* ========== SETTINGS BAR ========== */
+  #settings-bar {
+    background: #0f2e2e;
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  #settings-bar label { white-space: nowrap; }
+  #phone-input {
+    flex: 1;
+    min-width: 160px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    background: #1a4a4a;
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    direction: ltr;
+    text-align: left;
+  }
+  #phone-input:focus { outline: 2px solid #12b8b8; }
+  #apply-btn {
+    background: #12b8b8;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 18px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  #apply-btn:hover { background: #0d9595; }
+  #settings-note { color: #aee; font-size: 11px; flex-basis: 100%; }
+
+  /* ========== HEADER ========== */
+  .header {
+    background: linear-gradient(135deg, #0a7a7a 0%, #12b8b8 60%, #5ee6e6 100%);
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    pointer-events: none;
+  }
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 30px;
+    padding: 5px 16px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-size: clamp(26px, 7vw, 44px);
+    font-weight: 900;
+    line-height: 1.2;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .header h1 span { color: #b2fff0; }
+  .header .city-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  .header .tagline {
+    margin-top: 12px;
+    font-size: 15px;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+
+  /* ========== OFFER RIBBON ========== */
+  .offer-ribbon {
+    background: linear-gradient(90deg, #ff6b35, #ff9a3c);
+    color: #fff;
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    position: relative;
+  }
+  .offer-ribbon::after {
+    content: '🔥';
+    margin-right: 8px;
+  }
+
+  /* ========== CARD CONTAINER ========== */
+  .container {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0 14px;
+  }
+
+  /* ========== SECTION CARDS ========== */
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(10,120,120,0.10);
+    padding: 22px 20px;
+    margin-top: 16px;
+    border: 1px solid #d6f5f5;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+  .card:nth-child(4) { animation-delay: 0.4s; }
+
+  .section-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #0a7a7a;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #12b8b8, #0a7a7a);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ========== SERVICES GRID ========== */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .service-item {
+    background: linear-gradient(135deg, #f0fafa, #e0f7f7);
+    border: 1px solid #b8eaea;
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .service-item:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(10,120,120,0.15); }
+  .service-item .svc-icon { font-size: 28px; margin-bottom: 6px; }
+  .service-item .svc-name { font-size: 13px; font-weight: 700; color: #0a5a5a; line-height: 1.3; }
+
+  /* ========== FEATURES LIST ========== */
+  .features-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .features-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a3a3a;
+  }
+  .feat-icon {
+    width: 26px; height: 26px;
+    background: linear-gradient(135deg, #12b8b8, #0a7a7a);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  /* ========== PRICE BLOCK ========== */
+  .price-block {
+    background: linear-gradient(135deg, #0a7a7a, #12b8b8);
+    border-radius: 14px;
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-block::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px;
+    width: 100px; height: 100px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50%;
+  }
+  .price-block .price-label { font-size: 14px; opacity: 0.85; }
+  .price-block .price-main {
+    font-size: clamp(32px, 10vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 4px 0;
+  }
+  .price-block .price-main span { font-size: 20px; font-weight: 600; opacity: 0.85; }
+  .price-block .price-note { font-size: 12px; opacity: 0.75; }
+  .price-block .old-price {
+    font-size: 18px;
+    text-decoration: line-through;
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+
+  /* ========== CONTACT BLOCK ========== */
+  .contact-number-block {
+    background: #f0fafa;
+    border: 2px dashed #12b8b8;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .contact-number-block p { font-size: 13px; color: #5a8a8a; margin-bottom: 4px; }
+  .contact-number-block .num {
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 900;
+    color: #0a7a7a;
+    direction: ltr;
+    display: block;
+    letter-spacing: 1px;
+  }
+
+  /* ========== CTA BUTTONS ========== */
+  .cta-row { display: flex; gap: 10px; }
+  .btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 10px;
+    border-radius: 14px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    color: #fff;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+  .btn:active { transform: scale(0.97); }
+  .btn-call {
+    background: linear-gradient(135deg, #0a7a7a, #12b8b8);
+    box-shadow: 0 4px 14px rgba(10,120,120,0.3);
+  }
+  .btn-whatsapp {
+    background: linear-gradient(135deg, #128c5e, #25d366);
+    box-shadow: 0 4px 14px rgba(37,211,102,0.3);
+  }
+  .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* ========== FLOATING BUTTONS ========== */
+  .floating-btns {
+    position: fixed;
+    left: 14px;
+    bottom: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+  }
+  .float-btn {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    position: relative;
+  }
+  .float-btn.call-btn {
+    background: linear-gradient(135deg, #0a7a7a, #12b8b8);
+    animation: pulse-teal 2s infinite;
+  }
+  .float-btn.wa-btn {
+    background: linear-gradient(135deg, #128c5e, #25d366);
+    animation: pulse-green 2s infinite 0.4s;
+  }
+  @keyframes pulse-teal {
+    0%, 100% { box-shadow: 0 4px 16px rgba(18,184,184,0.4), 0 0 0 0 rgba(18,184,184,0.4); }
+    50%       { box-shadow: 0 4px 16px rgba(18,184,184,0.4), 0 0 0 10px rgba(18,184,184,0); }
+  }
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 4px 16px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.4); }
+    50%       { box-shadow: 0 4px 16px rgba(37,211,102,0.4), 0 0 0 10px rgba(37,211,102,0); }
+  }
+  .float-btn svg { width: 24px; height: 24px; }
+  .float-label {
+    position: absolute;
+    right: 58px;
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-family: 'Cairo', sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+  }
+  .float-btn:hover .float-label { opacity: 1; transform: translateX(0); }
+
+  /* ========== DOWNLOAD BUTTON ========== */
+  .download-row { text-align: center; margin-top: 18px; }
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #ff6b35, #ff9a3c);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 28px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(255,107,53,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,53,0.4); }
+  .download-btn svg { width: 20px; height: 20px; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    background: #0f2e2e;
+    color: #9dcfcf;
+    text-align: center;
+    padding: 18px 20px 24px;
+    margin-top: 24px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  footer .rights { color: #5a9a9a; font-size: 12px; margin-top: 4px; }
+  footer a { color: #12b8b8; text-decoration: none; font-weight: 700; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 400px) {
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .btn { font-size: 13px; padding: 12px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== SETTINGS BAR ========== -->
+<div id="settings-bar">
+  <label for="phone-input">📱 رقم التواصل:</label>
+  <input type="tel" id="phone-input" value="+966500000000" placeholder="+966500000000" dir="ltr" />
+  <button id="apply-btn" onclick="applyPhone()">تطبيق</button>
+  <span id="settings-note">✏️ غيّر الرقم ثم اضغط «تطبيق» — الزر الأخضر وزر الاتصال سيتحدثان تلقائياً</span>
+</div>
+
+<!-- ========== HEADER ========== -->
+<div class="header">
+  <div class="brand-badge">✨ الخيار الأول للتنظيف الشامل</div>
+  <h1>بسمة <span>التألق</span><br/>لخدمات التنظيف</h1>
+  <div class="city-badge">📍 جميع مناطق المملكة</div>
+  <p class="tagline">نعيد اللمعان لمنزلك بأحدث التقنيات وأفضل المواد</p>
+</div>
+
+<!-- ========== OFFER RIBBON ========== -->
+<div class="offer-ribbon">عرض خاص — خصم 30% على أول طلب!</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="container">
+
+  <!-- SERVICES -->
+  <div class="card">
+    <div class="section-title">
+      <div class="icon">🧹</div>
+      خدماتنا
+    </div>
+    <div class="services-grid">
+      <div class="service-item">
+        <div class="svc-icon">🏡</div>
+        <div class="svc-name">تنظيف شامل</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon">🏢</div>
+        <div class="svc-name">فلل وشقق</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon">❄️</div>
+        <div class="svc-name">تنظيف مكيفات</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon">🛋️</div>
+        <div class="svc-name">مجالس وسجاد</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICE -->
+  <div class="card">
+    <div class="section-title">
+      <div class="icon">💰</div>
+      الأسعار والعروض
+    </div>
+    <div class="price-block">
+      <div class="price-label">يبدأ السعر من</div>
+      <div class="price-main">٢٩٩ <span>ريال</span></div>
+      <div class="old-price">٤٤٩ ريال</div>
+      <div class="price-note">شامل المواد ومعدات التنظيف الاحترافية</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="card">
+    <div class="section-title">
+      <div class="icon">⭐</div>
+      لماذا بسمة التألق؟
+    </div>
+    <ul class="features-list">
+      <li><span class="feat-icon">✓</span> فريق محترف ومدرّب على أعلى مستوى</li>
+      <li><span class="feat-icon">✓</span> مواد تنظيف آمنة وصديقة للبيئة</li>
+      <li><span class="feat-icon">✓</span> ضمان الجودة أو الإعادة مجاناً</li>
+      <li><span class="feat-icon">✓</span> مواعيد مرنة تناسب جدولك</li>
+      <li><span class="feat-icon">✓</span> أسعار منافسة وشفافة بدون تكاليف خفية</li>
+    </ul>
+  </div>
+
+  <!-- CONTACT & CTA -->
+  <div class="card">
+    <div class="section-title">
+      <div class="icon">📞</div>
+      تواصل معنا الآن
+    </div>
+    <div class="contact-number-block">
+      <p>للحجز والاستفسار</p>
+      <span class="num" id="display-number">+966500000000</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-call" id="call-link" href="tel:+966500000000">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+        </svg>
+        اتصل الآن
+      </a>
+      <a class="btn btn-whatsapp" id="wa-link" href="https://wa.me/966500000000" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        واتساب
+      </a>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD BUTTON -->
+  <div class="download-row">
+    <button class="download-btn" onclick="downloadPage()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      تنزيل الصفحة (ZIP)
+    </button>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ========== FLOATING BUTTONS ========== -->
+<div class="floating-btns">
+  <a class="float-btn call-btn" id="float-call" href="tel:+966500000000" title="اتصل الآن">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    <span class="float-label">اتصل بنا</span>
+  </a>
+  <a class="float-btn wa-btn" id="float-wa" href="https://wa.me/966500000000" target="_blank" title="واتساب">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    <span class="float-label">واتساب</span>
+  </a>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div>تم التصميم بواسطة <a href="https://wa.me/201027818727" target="_blank">م. عبد المنعم</a></div>
+  <div class="rights">© 2025 بسمة التألق. جميع الحقوق محفوظة.</div>
+</footer>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+  // ── Apply phone number ──────────────────────────────────────
+  function applyPhone() {
+    var raw = document.getElementById('phone-input').value.trim();
+    // sanitize: digits, +, spaces only
+    var clean = raw.replace(/[^\d\+\s]/g, '');
+    if (!clean) return;
+
+    // E.164 for tel: and wa.me (no spaces/special chars)
+    var e164 = clean.replace(/[^\d\+]/g, '');
+
+    document.getElementById('display-number').textContent = clean;
+    document.getElementById('call-link').href    = 'tel:' + e164;
+    document.getElementById('wa-link').href      = 'https://wa.me/' + e164.replace('+','');
+    document.getElementById('float-call').href   = 'tel:' + e164;
+    document.getElementById('float-wa').href     = 'https://wa.me/' + e164.replace('+','');
+
+    // persist across download
+    currentPhone = e164;
+
+    var btn = document.getElementById('apply-btn');
+    btn.textContent = '✔ تم';
+    btn.style.background = '#0d9595';
+    setTimeout(function(){ btn.textContent = 'تطبيق'; btn.style.background = ''; }, 1500);
+  }
+
+  var currentPhone = '+966500000000';
+
+  // ── Download as ZIP ─────────────────────────────────────────
+  // Pure-JS minimal ZIP writer (no dependencies)
+  function downloadPage() {
+    // Grab the current full HTML and update phone values inside it
+    var html = document.documentElement.outerHTML;
+
+    // Patch the default phone in the downloaded file to reflect current choice
+    html = html.replace(/tel:\+966500000000/g, 'tel:' + currentPhone);
+    html = html.replace(/wa\.me\/966500000000/g, 'wa.me/' + currentPhone.replace('+',''));
+    html = html.replace(/value="\+966500000000"/g, 'value="' + currentPhone + '"');
+    html = html.replace(/>\+966500000000</g, '>' + currentPhone + '<');
+
+    var bytes = strToUint8(html);
+    var zip   = buildZip('index.html', bytes);
+    triggerDownload(zip, 'basmah-cleaning.zip');
+  }
+
+  function strToUint8(str) {
+    return new TextEncoder().encode(str);
+  }
+
+  // Minimal ZIP: Local file header + data + central dir + end record
+  function buildZip(filename, data) {
+    var fnBytes  = new TextEncoder().encode(filename);
+    var crc      = crc32(data);
+    var now      = dosDateTime();
+
+    // Local file header
+    var lhLen = 30 + fnBytes.length;
+    var lh = new Uint8Array(lhLen);
+    var lv = new DataView(lh.buffer);
+    lv.setUint32(0,  0x04034b50, true); // signature
+    lv.setUint16(4,  20, true);          // version needed
+    lv.setUint16(6,  0,  true);          // flags
+    lv.setUint16(8,  0,  true);          // compression (stored)
+    lv.setUint16(10, now.time, true);
+    lv.setUint16(12, now.date, true);
+    lv.setUint32(14, crc, true);
+    lv.setUint32(18, data.length, true); // compressed size
+    lv.setUint32(22, data.length, true); // uncompressed size
+    lv.setUint16(26, fnBytes.length, true);
+    lv.setUint16(28, 0, true);           // extra field length
+    lh.set(fnBytes, 30);
+
+    // Central directory header
+    var cdLen = 46 + fnBytes.length;
+    var cd = new Uint8Array(cdLen);
+    var cv = new DataView(cd.buffer);
+    cv.setUint32(0,  0x02014b50, true);
+    cv.setUint16(4,  20, true);
+    cv.setUint16(6,  20, true);
+    cv.setUint16(8,  0,  true);
+    cv.setUint16(10, 0,  true);
+    cv.setUint16(12, now.time, true);
+    cv.setUint16(14, now.date, true);
+    cv.setUint32(16, crc, true);
+    cv.setUint32(20, data.length, true);
+    cv.setUint32(24, data.length, true);
+    cv.setUint16(28, fnBytes.length, true);
+    cv.setUint16(30, 0, true);
+    cv.setUint16(32, 0, true);
+    cv.setUint16(34, 0, true);
+    cv.setUint16(36, 0, true);
+    cv.setUint32(38, 0, true);
+    cv.setUint32(42, 0, true); // local header offset = 0
+    cd.set(fnBytes, 46);
+
+    // End of central directory
+    var eocd = new Uint8Array(22);
+    var ev   = new DataView(eocd.buffer);
+    var cdOffset = lhLen + data.length;
+    ev.setUint32(0,  0x06054b50, true);
+    ev.setUint16(4,  0, true);
+    ev.setUint16(6,  0, true);
+    ev.setUint16(8,  1, true);  // total entries on disk
+    ev.setUint16(10, 1, true);  // total entries
+    ev.setUint32(12, cdLen, true);
+    ev.setUint32(16, cdOffset, true);
+    ev.setUint16(20, 0, true);
+
+    // Concatenate
+    var out = new Uint8Array(lhLen + data.length + cdLen + 22);
+    var off = 0;
+    out.set(lh,   off); off += lhLen;
+    out.set(data, off); off += data.length;
+    out.set(cd,   off); off += cdLen;
+    out.set(eocd, off);
+    return out;
+  }
+
+  function dosDateTime() {
+    var d = new Date();
+    var date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+    var time = (d.getHours() << 11) | (d.getMinutes() << 5) | Math.floor(d.getSeconds() / 2);
+    return { date: date, time: time };
+  }
+
+  function crc32(buf) {
+    var table = crc32.table || (crc32.table = (function() {
+      var t = new Uint32Array(256);
+      for (var i = 0; i < 256; i++) {
+        var c = i;
+        for (var j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+        t[i] = c;
+      }
+      return t;
+    })());
+    var crc = 0xFFFFFFFF;
+    for (var i = 0; i < buf.length; i++) {
+      crc = table[(crc ^ buf[i]) & 0xFF] ^ (crc >>> 8);
+    }
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  function triggerDownload(bytes, filename) {
+    var blob = new Blob([bytes], { type: 'application/zip' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href     = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>
